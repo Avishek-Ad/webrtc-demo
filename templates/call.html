@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="w-full flex flex-col items-center gap-6">
+  <!-- Local Video -->
+  <div class="flex flex-col items-center">
+    <h2 class="text-xl font-semibold text-gray-200 mb-2">
+      Your Camera : <span id="myid"></span>
+    </h2>
+    <video
+      id="localStream"
+      autoplay
+      class="w-64 h-40 bg-black rounded-lg shadow-md border-2 border-gray-300"
+    ></video>
+    <div class="space-x-4 mt-3">
+      <button
+        id="videoButton"
+        class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium shadow-md transition"
+      >
+        Video: on
+      </button>
+
+      <button
+        id="audioButton"
+        class="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white font-medium shadow-md transition"
+      >
+        Audio: on
+      </button>
+    </div>
+  </div>
+
+  <!-- Remote Videos -->
+  <div class="w-full max-w-4xl">
+    <h2 class="text-xl font-semibold text-gray-200 mb-2">Participants</h2>
+    <div id="remoteStreams" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+  </div>
+</div>
+
+<script>
+  async function init() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+
+      document.getElementById("localStream").srcObject = stream;
+      document.getElementById("localStream").muted = false;
+    } catch (error) {
+      console.error("Error accessing camera/microphone:", error);
+    }
+  }
+
+  init();
+</script>
+{% endblock %}
